@@ -147,7 +147,7 @@ endif
 LIBRARY_FLAGS	= scr
 
 # SIZE SECTION
-SIZE	= $(TOOLS)/bin/size
+SIZE	= $(TOOLS)/bin/riscv64-unknown-linux-gnu-size
 SIZE_FLAGS		= 
 
 # CONTROL SECTION
