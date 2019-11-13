@@ -13,4 +13,4 @@ make PORT_DIR=../riscv64 compile
 mv coremark.riscv ../
 
 make PORT_DIR=../riscv64-baremetal compile
-mv coremark.riscv-bm ../
+mv coremark.bare.riscv ../

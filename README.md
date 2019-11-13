@@ -11,9 +11,9 @@ This repository provides the utility files to port [CoreMark EEMBC](https://www.
 
   - `git submodule update --init`
   - Run the `./build-coremark.sh` script that does the following
-    - Clones the [CoreMark repository](https://github.com/eembc/coremark) and checks out the hash found in `COREMARK_HASH`
-    - Copies the `riscv64` repository to the `coremark` repo
-    - Compiles the binary (location is `coremark/coremark.riscv`)
+    - Builds a version of Coremark for Linux or pk (coremark.riscv)
+    - Builds a version of Coremark for bare-metal (coremark.bare.riscv)
+    - Copies the output binaries into this directory
 
 ### Default Files
 
