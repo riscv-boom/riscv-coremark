@@ -14,3 +14,7 @@ mv coremark.riscv ../
 
 make PORT_DIR=../riscv64-baremetal compile
 mv coremark.bare.riscv ../
+
+cd $BASEDIR
+riscv64-unknown-elf-objdump -D coremark.riscv > coremark.riscv.dump
+riscv64-unknown-elf-objdump -D coremark.bare.riscv > coremark.bare.riscv.dump
