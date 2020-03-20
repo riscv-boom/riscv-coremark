@@ -119,7 +119,7 @@ void portable_free(void *p) {
 	#define TIMER_RES_DIVIDER 1
 	#define SAMPLE_TIME_IMPLEMENTATION 1
 #endif
-#define EE_TICKS_PER_SEC (NSECS_PER_SEC / TIMER_RES_DIVIDER)
+#define EE_TICKS_PER_SEC 1
 
 #if SAMPLE_TIME_IMPLEMENTATION
 /** Define Host specific (POSIX), or target specific global time variables. */
@@ -226,7 +226,14 @@ void portable_init(core_portable *p, int *argc, char *argv[])
 */
 void portable_fini(core_portable *p)
 {
+	unsigned long cycle, instret;
 	p->portable_id=0;
+
+	__asm__ __volatile__ (
+		"rdcycle %0\n"
+		"rdinstret %1\n"
+		: "=r" (cycle), "=r" (instret));
+	ee_printf("mcycle = %lu\n" "minstret = %lu\n", cycle, instret);
 }
 
 #if (MULTITHREAD>1)

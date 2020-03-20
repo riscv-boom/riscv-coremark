@@ -12,7 +12,7 @@ echo "Start compilation"
 make PORT_DIR=../riscv64 compile
 mv coremark.riscv ../
 
-make PORT_DIR=../riscv64-baremetal compile
+make PORT_DIR=../riscv64-baremetal ITERATIONS=1 compile
 mv coremark.bare.riscv ../
 
 cd $BASEDIR
