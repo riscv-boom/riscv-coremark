@@ -24,11 +24,18 @@ Original Author: Shay Gal-on
 /************************/
 /* Data types and settings */
 /************************/
+/* Configuration: Used or assumed core frequency in MHz
+	Must be low enough to run on spike or FPGAs.
+*/
+#ifndef BAREMETAL_CORE_FREQ
+#define BAREMETAL_CORE_FREQ 1000000		// 1 MHz
+#endif
+
 /* Configuration: HAS_FLOAT
 	Define to 1 if the platform supports floating point.
 */
 #ifndef HAS_FLOAT
-#define HAS_FLOAT 1
+#define HAS_FLOAT 0  // The used syscalls.c doesn't have float implemented. Coremark does not test float.
 #endif
 /* Configuration: HAS_TIME_H
 	Define to 1 if platform has the time.h header file,
