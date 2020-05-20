@@ -108,7 +108,7 @@ void portable_free(void *p) {
 	#define SAMPLE_TIME_IMPLEMENTATION 1
 #else
     // Defined for RISCV
-    #define NSECS_PER_SEC 1000000000 // TODO: What freq are we assuming?
+    #define NSECS_PER_SEC BAREMETAL_CORE_FREQ // Frequency defined in core_portme.h
 	#define EE_TIMER_TICKER_RATE 1000 // TODO: What is this?
 	#define CORETIMETYPE clock_t
     #define read_csr(reg) ({ unsigned long __tmp; \
