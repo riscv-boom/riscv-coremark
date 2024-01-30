@@ -16,6 +16,20 @@
 
 #File: core_portme.mak
 
+# Flag: ARCH
+#   RISC-V ISA specification string
+ARCH ?= rv64imafdc
+# Flag: ABI
+#   RISC-V ABI
+ABI ?= lp64d
+ARCHFLAGS = -march=$(ARCH) -mabi=$(ABI)
+# Flag: DEBUG
+#   Enable debugging output
+DEBUG ?=
+# Flag: TICKS_PER_SEC
+#   Hard-coded clock frequency of the tested CPU. Set to a reasonably low value
+#   when running in a RTL simulation.
+TICKS_PER_SEC ?=
 # Flag: RISCVTOOLS
 #	Use this flag to point to your RISCV tools
 RISCVTOOLS=$(RISCV)
@@ -31,7 +45,13 @@ CC = $(RISCVTOOLS)/bin/$(RISCVTYPE)-gcc
 # Flag: CFLAGS
 #	Use this flag to define compiler options. Note, you can add compiler options from the command line using XCFLAGS="other flags"
 #PORT_CFLAGS = -O2 -static -std=gnu99
-PORT_CFLAGS = -O2 -mcmodel=medany -static -std=gnu99 -fno-common -fno-tree-loop-distribute-patterns -nostdlib -nostartfiles -lm -lgcc -T $(PORT_DIR)/link.ld
+PORT_CFLAGS = $(ARCHFLAGS) -O2 -mcmodel=medany -static -std=gnu99 -fno-common -fno-tree-loop-distribute-patterns -nostdlib -nostartfiles -lm -lgcc -T $(PORT_DIR)/link.ld
+ifneq ($(TICKS_PER_SEC),)
+  PORT_CFLAGS += -DEE_TICKS_PER_SEC=$(TICKS_PER_SEC)
+endif
+ifneq ($(DEBUG),)
+  PORT_CFLAGS += -DCORE_DEBUG=1
+endif
 FLAGS_STR = "$(PORT_CFLAGS) $(XCFLAGS) $(XLFLAGS) $(LFLAGS_END)"
 CFLAGS = $(PORT_CFLAGS) -I$(PORT_DIR) -I. -DFLAGS_STR=\"$(FLAGS_STR)\"
 #Flag: LFLAGS_END

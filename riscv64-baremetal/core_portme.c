@@ -119,7 +119,11 @@ void portable_free(void *p) {
 	#define TIMER_RES_DIVIDER 1
 	#define SAMPLE_TIME_IMPLEMENTATION 1
 #endif
+
+// Allow overriding EE_TICKS_PER_SEC
+#ifndef EE_TICKS_PER_SEC
 #define EE_TICKS_PER_SEC (NSECS_PER_SEC / TIMER_RES_DIVIDER)
+#endif
 
 #if SAMPLE_TIME_IMPLEMENTATION
 /** Define Host specific (POSIX), or target specific global time variables. */
