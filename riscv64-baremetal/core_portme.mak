@@ -45,7 +45,7 @@ CC = $(RISCVTOOLS)/bin/$(RISCVTYPE)-gcc
 # Flag: CFLAGS
 #	Use this flag to define compiler options. Note, you can add compiler options from the command line using XCFLAGS="other flags"
 #PORT_CFLAGS = -O2 -static -std=gnu99
-PORT_CFLAGS = $(ARCHFLAGS) -O2 -mcmodel=medany -static -std=gnu99 -fno-common -fno-tree-loop-distribute-patterns -nostdlib -nostartfiles -lm -lgcc -T $(PORT_DIR)/link.ld
+PORT_CFLAGS = $(ARCHFLAGS) -O2 -mcmodel=medany -static -std=gnu99 -fno-common -fno-tree-loop-distribute-patterns -nostdlib -nostartfiles -fno-builtin -lm -lgcc -T $(PORT_DIR)/link.ld
 ifneq ($(TICKS_PER_SEC),)
   PORT_CFLAGS += -DEE_TICKS_PER_SEC=$(TICKS_PER_SEC)
 endif
@@ -60,13 +60,22 @@ CFLAGS = $(PORT_CFLAGS) -I$(PORT_DIR) -I. -DFLAGS_STR=\"$(FLAGS_STR)\"
 LFLAGS_END +=
 # Flag: PORT_SRCS
 # Port specific source files can be added here
-PORT_SRCS = $(PORT_DIR)/core_portme.c $(PORT_DIR)/syscalls.c $(PORT_DIR)/crt.S
+PORT_SRCS = $(PORT_DIR)/core_portme.c $(PORT_DIR)/syscalls.c $(PORT_DIR)/crt.S $(PORT_DIR)/ee_printf.c barebones/cvt.c
 # Flag: LOAD
 #	Define this flag if you need to load to a target, as in a cross compile environment.
 
 # Flag: RUN
 #	Define this flag if running does not consist of simple invocation of the binary.
 #	In a cross compile environment, you need to define this.
+
+# Instead of copying and manually modifying ee_printf.c file its done on the fly:
+# - uart_send_char() is marked as weak. It's implemented in a different file
+# - the #error directive is removed
+# - ee_printf() buffer is increased to 1KB
+$(PORT_DIR)/ee_printf.c: barebones/ee_printf.c
+	@sed '/uart_send_char(char c)/s/^/__attribute__((weak)) /' $< >$@
+	@sed -ie '/#error/d' $@
+	@sed -i 's/char buf\[256\]/char buf\[1024\]/g' $@
 
 #For flashing and using a tera term macro, you could use
 #LOAD = flash ADDR

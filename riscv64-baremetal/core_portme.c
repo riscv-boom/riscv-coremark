@@ -348,3 +348,9 @@ ee_u8 core_stop_parallel(core_results *res) {
 #error "Please implement multicore functionality in core_portme.c to use multiple contexts."
 #endif /* multithread implementations */
 #endif
+
+extern int putchar(int ch);
+
+void uart_send_char (char ch) {
+    putchar(ch);
+}
