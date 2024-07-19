@@ -119,7 +119,11 @@ void portable_free(void *p) {
 	#define TIMER_RES_DIVIDER 1
 	#define SAMPLE_TIME_IMPLEMENTATION 1
 #endif
+
+// Allow overriding EE_TICKS_PER_SEC
+#ifndef EE_TICKS_PER_SEC
 #define EE_TICKS_PER_SEC (NSECS_PER_SEC / TIMER_RES_DIVIDER)
+#endif
 
 #if SAMPLE_TIME_IMPLEMENTATION
 /** Define Host specific (POSIX), or target specific global time variables. */
@@ -344,3 +348,9 @@ ee_u8 core_stop_parallel(core_results *res) {
 #error "Please implement multicore functionality in core_portme.c to use multiple contexts."
 #endif /* multithread implementations */
 #endif
+
+extern int putchar(int ch);
+
+void uart_send_char (char ch) {
+    putchar(ch);
+}

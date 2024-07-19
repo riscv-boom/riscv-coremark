@@ -54,7 +54,7 @@ Original Author: Shay Gal-on
 	Define to 1 if the platform has stdio.h and implements the printf function.
 */
 #ifndef HAS_PRINTF
-#define HAS_PRINTF 1
+#define HAS_PRINTF 0
 #endif
 
 /* Configuration: CORE_TICKS
@@ -292,5 +292,8 @@ void portable_fini(core_portable *p);
   #endif
  #endif
 #endif /* SEED_METHOD==SEED_VOLATILE */
+
+extern void uart_send_char (char);
+extern int ee_printf (const char *, ...);
 
 #endif /* CORE_PORTME_H */
